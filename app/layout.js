@@ -15,6 +15,7 @@ export default function RootLayout({ children }) {
       <h1 className={"text-base sm:text-lg textGradient " + fugaz.className}>
         Broodl
       </h1>
+      <div className="flex items-center justify-between">PLACEHOLDER</div>
     </header>
   );
 
