@@ -1,8 +1,6 @@
-import { baseRating, demoData, gradients } from "@/utils";
-import { Fugaz_One } from "next/font/google";
-import React from "react";
-
-const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
+"use client";
+import { baseRating, gradients } from "@/utils";
+import React, { useState } from "react";
 
 const months = {
   January: "Jan",
@@ -32,15 +30,29 @@ const dayList = [
 ];
 
 export default function Calendar(props) {
-  const { demo } = props;
+  const { demo, data, handleSetMood } = props;
 
-  const year = 2024;
-  const month = "July";
-  const monthNow = new Date(year, Object.keys(months).indexOf(month), 1);
+  const now = new Date();
+  const currMonth = now.getMonth();
+  const [selectedMonth, setSelectedMonth] = useState(
+    Object.keys(months)[currMonth]
+  );
+  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+
+  function handleIncrementMonth(val) {
+    // value +1 -1
+    // if we hit the bounds of the months, then we can just adjust the year that is displayed instead.
+  }
+
+  const monthNow = new Date(
+    selectedYear,
+    Object.keys(months).indexOf(selectedMonth),
+    1
+  );
   const firstDayOfMonth = monthNow.getDay();
   const daysInMonth = new Date(
-    year,
-    Object.keys(month).indexOf(month) + 1,
+    selectedYear,
+    Object.keys(selectedMonth).indexOf(selectedMonth) + 1,
     0
   ).getDate();
 
@@ -69,11 +81,10 @@ export default function Calendar(props) {
               if (!dayDisplay) {
                 return <div className="bg-white" key={dayOfWeekIndex} />;
               }
-
               let color = demo
                 ? gradients.indigo[baseRating[dayIndex]]
-                : dayIndex in demoData
-                ? gradients.indigo[demoData[dayIndex]]
+                : dayIndex in data
+                ? gradients.indigo[data[dayIndex]]
                 : "white";
 
               return (
