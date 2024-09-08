@@ -13,11 +13,32 @@ const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 export default function Dashboard() {
   const { currentUser, userDataObj, setUserDataObj, loading } = useAuth();
   const [data, setData] = useState({});
+  const now = new Date();
 
-  function countValues(arr) {}
+  function countValues(arr) {
+    let total_number_of_days = 0;
+    let sum_moods = 0;
+    for (const year in data) {
+      for (const month in data[year]) {
+        for (const day in data[year][month]) {
+          let days_mood = data[year][month][day];
+          total_number_of_days++;
+          sum_moods += days_mood;
+        }
+      }
+    }
+    return {
+      num_days: total_number_of_days,
+      average_mood: sum_moods / total_number_of_days,
+    };
+  }
+
+  const statuses = {
+    ...countValues(),
+    time_remaining: `${23 - now.getHours()}H ${60 - now.getMinutes()}M`,
+  };
 
   async function handleSetMood(mood) {
-    const now = new Date();
     const day = now.getDate();
     const month = now.getMonth();
     const year = now.getFullYear();
@@ -54,12 +75,6 @@ export default function Dashboard() {
     }
   }
 
-  const statuses = {
-    num_days: 14,
-    time_remaining: "13:14:26",
-    date: new Date().toDateString(),
-  };
-
   const moods = {
     "&*@#$": "😭",
     Sad: "😢",
@@ -89,11 +104,17 @@ export default function Dashboard() {
         {Object.keys(statuses).map((status, statusIndex) => {
           return (
             <div key={statusIndex} className="flex flex-col gap-1 sm:gap-2 ">
-              <p className="font-medium uppercase text-xs sm:text-sm truncate ">
+              <p
+                className={
+                  "font-medium capitalize text-xs sm:text-sm truncate " +
+                  fugaz.className
+                }
+              >
                 {status.replaceAll("_", " ")}
               </p>
               <p className={"text-base sm:text-lg truncate " + fugaz.className}>
                 {statuses[status]}
+                {status === "num_days" ? " 🔥" : ""}
               </p>
             </div>
           );
@@ -132,7 +153,7 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <Calendar data={data} handleSetMood={handleSetMood} />
+      <Calendar completeData={data} handleSetMood={handleSetMood} />
     </div>
   );
 }
