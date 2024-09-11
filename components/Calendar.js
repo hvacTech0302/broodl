@@ -1,8 +1,7 @@
 "use client";
-import { baseRating, gradients } from "@/utils";
+import { baseRating, gradients, emojis } from "@/utils";
 import { Fugaz_One } from "next/font/google";
 import React, { useState } from "react";
-
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 
 const months = {
@@ -132,15 +131,22 @@ export default function Calendar(props) {
                   <div
                     style={{ background: color }}
                     className={
-                      "text-xs sm:text-sm border border-solid p-2 flex items center gap-2 justify-between rounded-lg " +
-                      (isToday
-                        ? " border-indigo-400 "
+                      "text-xs sm:text-sm border border-solid p-2 flex items-center gap-2 justify-between rounded-lg " +
+                      (isToday &&
+                      numericMonth === now.getMonth() &&
+                      selectedYear === now.getFullYear()
+                        ? " border-indigo-400 border-2 "
                         : " border-indigo-100 ") +
                       (color === "white" ? " text-indigo-400 " : " text-white ")
                     }
                     key={dayOfWeekIndex}
                   >
                     <p>{dayIndex}</p>
+                    {dayIndex in data ? (
+                      <span className="mx-auto overflow-hidden whitespace-nowrap invisible sm:visible sm:text-base md:text-lg lg:text-xl">
+                        {emojis[data[dayIndex]]}
+                      </span>
+                    ) : null}
                   </div>
                 );
               })}

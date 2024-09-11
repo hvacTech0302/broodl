@@ -7,6 +7,8 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import Login from "./Login";
 import Loading from "./Loading";
+import { gradients } from "@/utils";
+import { moods } from "@/utils";
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -75,14 +77,6 @@ export default function Dashboard() {
     }
   }
 
-  const moods = {
-    "&*@#$": "😭",
-    Sad: "😢",
-    Existing: "😳",
-    Good: "😊",
-    Elated: "😍",
-  };
-
   useEffect(() => {
     if (!currentUser || !userDataObj) {
       return;
@@ -129,6 +123,7 @@ export default function Dashboard() {
       </h4>
       <div className="flex items-stretch flex-wrap gap-4 ">
         {Object.keys(moods).map((mood, moodIndex) => {
+          let color = gradients.indigo[moodIndex + 1];
           return (
             <button
               onClick={() => {
@@ -136,14 +131,13 @@ export default function Dashboard() {
                 handleSetMood(currentMoodValue);
               }}
               key={moodIndex}
-              className={
-                "p-4 px-5 rounded-2xl purpleShadow duration-200 bg-indigo-50 hover:bg-indigo-100 items-center text-center flex flex-col gap-2 flex-1 "
-              }
+              style={{ background: color }}
+              className="p-4 px-5 rounded-2xl purpleShadow duration-200 items-center text-center flex flex-col gap-2 flex-1"
             >
               <p className="text-4xl sm:text-5xl md:text-6xl ">{moods[mood]}</p>
               <p
                 className={
-                  "text-indigo-500 text-xs sm:text-sm md:text-base " +
+                  "text-white text-xs sm:text-sm md:text-base " +
                   fugaz.className
                 }
               >

@@ -115,3 +115,19 @@ export const demoData = {
   23: 3,
   24: 5,
 };
+
+export const moods = {
+  "&*@#$": "😠",
+  Sad: "😞",
+  Blah: "😐",
+  Good: "😊",
+  Outstanding: "😁",
+};
+
+export const emojis = {
+  1: "😠",
+  2: "😞",
+  3: "😐",
+  4: "😊",
+  5: "😁",
+};
